@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="光影学徒的数字探索小站：认识计算机，探索网络，用一个小测验点亮数字知识。">
+  <meta name="theme-color" content="#f5f8ff">
+  <title>我的数字探索小站 · 光影学徒</title>
+  <style>
+    :root { --blue: #3767d6; --blue-dark: #244ca7; --ink: #203350; --muted: #697a93; --line: #e2e9f4; --surface: #f5f8ff; --radius: 22px; --shadow: 0 8px 30px #24477c07; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 94px; }
+    body { margin: 0; background: #fff; color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+    button, input { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { cursor: pointer; }
+    button:disabled { cursor: not-allowed; }
+    :focus-visible { outline: 3px solid #86aaf6; outline-offset: 5px; }
+    ::selection { background: #dce8ff; }
+    .container { width: min(1120px, calc(100% - 64px)); margin-inline: auto; }
+    .skip { position: fixed; top: -70px; left: 16px; background: #fff; padding: 8px 20px; z-index: 100; border: 1px solid var(--blue); border-radius: 8px; }
+    .skip:focus { top: 10px; }
+    .site-header { position: sticky; top: 0; z-index: 20; background: #ffffffed; border-bottom: 1px solid #e9eef6; backdrop-filter: blur(16px); }
+    .header-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 750; font-size: 17px; letter-spacing: .02em; }
+    .brand-mark { display: grid; place-items: center; width: 35px; height: 35px; background: var(--blue); color: white; border-radius: 11px; }
+    svg { display: block; }
+    .icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    nav { display: flex; gap: 29px; font-size: 13px; color: var(--muted); }
+    nav a { padding: 8px 0; transition: color .2s; }
+    nav a:hover { color: var(--blue); }
+    nav .nav-quiz { color: var(--blue); font-weight: 650; }
+    .hero { position: relative; overflow: hidden; background: linear-gradient(115deg, #f7faff, #edf3ff 65%, #f1f6ff); }
+    .hero-inner { min-height: 548px; display: grid; grid-template-columns: 1.12fr 1fr; align-items: center; gap: 35px; padding-block: 64px; }
+    .eyebrow { color: var(--blue); font-size: 10px; letter-spacing: .21em; font-weight: 750; margin: 0 0 20px; }
+    .hello { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #dce6fa; border-radius: 100px; background: #ffffffa6; padding: 5px 13px; color: #53709c; font-size: 12px; }
+    .hello span { width: 6px; height: 6px; border-radius: 50%; background: #7199e7; }
+    h1 { margin: 19px 0; font-size: clamp(38px, 5vw, 59px); line-height: 1.28; letter-spacing: -.045em; font-weight: 800; }
+    h1 em { font-style: normal; color: var(--blue); }
+    .hero-description { max-width: 410px; margin: 0 0 27px; color: var(--muted); font-size: 14px; line-height: 1.95; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 18px; min-height: 45px; border: 1px solid transparent; border-radius: 11px; padding: 10px 20px; background: var(--blue); color: white; font-size: 13px; font-weight: 600; transition: background .2s, transform .2s; }
+    .button:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .button:disabled { color: #8f9fb6; background: #e8eef9; transform: none; }
+    .button.secondary { color: var(--muted); background: #fff; border-color: var(--line); }
+    .button.secondary:hover { color: var(--blue); background: var(--surface); }
+    .hero-note { color: #8797af; font-size: 11px; margin-top: 22px; letter-spacing: .07em; }
+    .hero-art { position: relative; padding: 24px 12px; }
+    .art-window { transform: rotate(-4deg); border-radius: 19px; background: #fff; box-shadow: 0 24px 60px #436bad1a; border: 1px solid #fff; padding: 15px; }
+    .window-top { display: flex; align-items: center; gap: 5px; padding: 0 1px 12px; }
+    .window-top i { width: 6px; height: 6px; background: #d6e1f4; border-radius: 50%; }
+    .window-top span { margin-left: auto; font: 9px ui-monospace, monospace; color: #9ca9be; letter-spacing: .09em; }
+    .art-scene { width: 100%; height: auto; border-radius: 11px; background: #edf3ff; }
+    .art-caption { padding: 12px 2px 0; display: flex; align-items: center; justify-content: space-between; font: 9px ui-monospace, monospace; color: #95a3ba; letter-spacing: .08em; }
+    .floating-label { position: absolute; background: #ffffffed; border: 1px solid #e4ebf9; border-radius: 12px; box-shadow: 0 8px 24px #4566a310; padding: 10px 15px; font-size: 12px; color: #5475b2; }
+    .floating-label.first { top: 7px; right: -5px; transform: rotate(5deg); }
+    .floating-label.last { bottom: 0; left: -20px; transform: rotate(3deg); }
+    section.content-section { padding-block: 66px; }
+    .section-heading { margin-bottom: 28px; }
+    .section-kicker { font: 10px ui-monospace, monospace; color: #7d9acb; letter-spacing: .16em; margin: 0 0 8px; }
+    h2 { margin: 0; font-size: 27px; letter-spacing: -.03em; line-height: 1.5; }
+    .section-description { margin: 7px 0 0; color: var(--muted); font-size: 13px; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1.15fr 1.15fr; gap: 18px; }
+    .card { border: 1px solid var(--line); background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .about-card { padding: 25px; }
+    .profile { display: flex; align-items: center; gap: 16px; background: #f6f9ff; }
+    .avatar { flex-shrink: 0; width: 57px; height: 57px; display: grid; place-items: center; border-radius: 18px; background: #e4edff; color: var(--blue); }
+    .profile-label, .card-label { color: #8b99ad; font-size: 11px; margin: 0 0 5px; }
+    .profile h3 { margin: 0; font-size: 20px; }
+    .profile small { font-size: 10px; color: #8397b7; letter-spacing: .03em; }
+    .about-card h3.small-heading { margin: 0 0 13px; font-size: 14px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+    .small-heading .icon { color: #6c90d8; width: 18px; height: 18px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag { padding: 3px 9px; border-radius: 6px; font-size: 11px; background: #f1f5fd; color: #5f79a5; }
+    .universe { background: #f8faff; border-block: 1px solid #edf1f8; }
+    .heading-row { display: flex; justify-content: space-between; align-items: end; gap: 20px; }
+    .aside-note { margin: 0 0 4px; color: #9ba8bd; font: 10px ui-monospace, monospace; letter-spacing: .08em; }
+    .universe-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .universe-card { padding: 25px 23px; position: relative; transition: transform .2s, box-shadow .2s; }
+    .universe-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px #24477c10; }
+    .card-icon { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; color: var(--blue); background: #edf3ff; margin-bottom: 22px; }
+    .card-number { position: absolute; top: 25px; right: 22px; color: #b0bed3; font: 10px ui-monospace, monospace; }
+    .universe-card h3 { margin: 0; font-size: 17px; }
+    .english { display: block; color: #91a1b9; font-size: 10px; font-weight: 400; letter-spacing: .06em; margin-top: 2px; }
+    .universe-card h4 { font-size: 13px; color: #5271a4; margin: 18px 0 7px; font-weight: 600; }
+    .universe-card p { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.9; }
+    .network-intro { display: flex; align-items: center; gap: 11px; font-size: 12px; color: #7184a4; margin: 0 0 22px; }
+    .network-intro .icon { width: 18px; height: 18px; color: #7697d5; }
+    .network-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; list-style: none; margin: 0; padding: 0; counter-reset: network; }
+    .network-card { position: relative; padding: 22px; background: #fbfcff; counter-increment: network; }
+    .network-card::before { content: "0" counter(network); display: grid; place-items: center; width: 28px; height: 28px; background: #eaf1ff; color: #6085cb; border-radius: 9px; font: 11px ui-monospace, monospace; margin-bottom: 16px; }
+    .network-card:not(:last-child)::after { content: "→"; position: absolute; right: -16px; top: 25px; z-index: 1; color: #9bb0d4; font-size: 15px; }
+    .network-card h3 { margin: 0 0 9px; font-size: 15px; }
+    .network-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.9; }
+    .network-card .analogy { color: #5274af; margin-top: 13px; font-size: 11px; }
+    .protocol { margin-top: 20px; background: #f1f6ff; border: 1px solid #e1eafa; border-radius: 15px; padding: 19px 23px; display: flex; gap: 16px; align-items: center; }
+    .protocol > .icon { color: #668ad0; width: 27px; height: 27px; flex-shrink: 0; }
+    .protocol h3 { margin: 0 0 4px; font-size: 13px; }
+    .protocol p { margin: 0; color: var(--muted); font-size: 12px; }
+    .quiz-section { background: #f8faff; border-top: 1px solid #edf1f8; }
+    .quiz-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 65px; align-items: start; }
+    .quiz-intro { padding-top: 15px; }
+    .quiz-intro h2 { margin-bottom: 12px; font-size: 30px; }
+    .quiz-intro > p:not(.section-kicker) { font-size: 13px; color: var(--muted); max-width: 295px; }
+    .quiz-meta { display: flex; gap: 17px; margin-top: 23px; font-size: 11px; color: #8194b1; }
+    .quiz-meta span { display: inline-flex; gap: 6px; align-items: center; }
+    .quiz-meta .icon { width: 15px; height: 15px; }
+    .quiz-tip { margin-top: 36px; padding-left: 14px; border-left: 2px solid #cedcf5; color: #8c9bb2; font-size: 11px; line-height: 1.9; }
+    .quiz-card { padding: 29px; min-height: 385px; }
+    .quiz-top { display: flex; justify-content: space-between; align-items: center; color: #8396b5; font-size: 11px; margin-bottom: 13px; }
+    .quiz-top strong { font-weight: 600; color: #567ab9; }
+    progress { width: 100%; height: 4px; border: none; background: #edf1f8; border-radius: 9px; display: block; margin-bottom: 23px; accent-color: #789ee9; }
+    progress::-webkit-progress-bar { border-radius: 9px; background: #edf1f8; }
+    progress::-webkit-progress-value { border-radius: 9px; background: #789ee9; }
+    progress::-moz-progress-bar { border-radius: 9px; background: #789ee9; }
+    fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+    legend { padding: 0; margin-bottom: 18px; font-size: 16px; font-weight: 650; line-height: 1.65; width: 100%; }
+    .answer { display: flex; gap: 10px; align-items: center; padding: 11px 13px; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 9px; color: #687d9e; font-size: 12px; cursor: pointer; transition: background .2s, border-color .2s; }
+    .answer:hover { background: #f7faff; border-color: #b8cdf4; }
+    .answer.is-selected { background: #eef4ff; border-color: #8daeea; color: var(--blue-dark); }
+    .answer input { accent-color: var(--blue); margin: 0; width: 15px; height: 15px; flex-shrink: 0; }
+    .answer-letter { color: #95a7c1; font: 11px ui-monospace, monospace; }
+    .quiz-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 21px; }
+    #next-question { margin-left: auto; }
+    .quiz-hint { margin: 0; color: #95a4ba; font-size: 11px; }
+    .quiz-hint.is-error { color: #a35b36; }
+    [hidden] { display: none !important; }
+    .result { text-align: center; }
+    .result-label { font-size: 12px; color: var(--muted); margin: 4px 0; }
+    .score { color: var(--blue); font-size: 58px; font-weight: 750; line-height: 1.3; letter-spacing: -.05em; margin: 8px 0; }
+    .score span { font-size: 17px; font-weight: 400; color: #93a6c5; letter-spacing: 0; }
+    .result h3 { margin: 8px 0; font-size: 19px; }
+    .result-summary { font-size: 12px; color: var(--muted); margin: 0 0 20px; }
+    .review { margin-top: 22px; text-align: left; border-top: 1px solid var(--line); padding-top: 18px; }
+    .review summary { cursor: pointer; color: #587cb9; font-size: 12px; }
+    .review ol { padding-left: 20px; font-size: 12px; }
+    .review li { padding: 10px 0; border-bottom: 1px solid #edf1f8; }
+    .review li p { margin: 5px 0 0; color: var(--muted); }
+    .answer-status { display: inline-block; margin-right: 6px; font-size: 10px; font-weight: 600; }
+    .answer-status.correct { color: #36826e; }
+    .answer-status.incorrect { color: #b46d4d; }
+    .site-footer { padding-block: 27px; color: #8e9db4; font-size: 11px; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .footer-inner p { margin: 0; }
+    .footer-brand { color: #637b9f; }
+    .footer-link:hover { color: var(--blue); }
+    @media (min-width: 1500px) { .hero-inner { min-height: 580px; } }
+    @media (max-width: 900px) {
+      .container { width: calc(100% - 40px); }
+      .hero-inner { gap: 25px; min-height: 490px; }
+      h1 { font-size: 44px; }
+      .about-grid { grid-template-columns: 1fr 1fr; }
+      .profile { grid-column: 1 / -1; }
+      .universe-grid, .network-grid { grid-template-columns: repeat(2, 1fr); }
+      .network-card:nth-child(2)::after { display: none; }
+      .quiz-layout { gap: 30px; grid-template-columns: .8fr 1.2fr; }
+      .quiz-card { padding: 23px; }
+      .floating-label.last { left: -8px; }
+    }
+    @media (max-width: 600px) {
+      html { scroll-padding-top: 110px; }
+      .container { width: calc(100% - 36px); }
+      .header-inner { min-height: 96px; flex-direction: column; justify-content: center; gap: 7px; padding-block: 11px; }
+      .brand { font-size: 15px; }
+      .brand-mark { width: 28px; height: 28px; border-radius: 9px; }
+      .brand-mark .icon { width: 20px; height: 20px; }
+      nav { width: 100%; justify-content: space-between; gap: 12px; font-size: 11px; }
+      nav a { padding: 4px 0; }
+      .hero-inner { grid-template-columns: 1fr; padding-block: 42px 35px; gap: 22px; }
+      .eyebrow { font-size: 9px; }
+      h1 { font-size: 43px; }
+      .hero-description { font-size: 13px; }
+      .hero-art { width: min(345px, 92%); margin-inline: auto; }
+      .floating-label { font-size: 10px; }
+      section.content-section { padding-block: 43px; }
+      h2 { font-size: 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 12px; }
+      .about-card { padding: 21px; }
+      .aside-note { display: none; }
+      .universe-grid, .network-grid { gap: 12px; }
+      .universe-card { padding: 20px 16px; }
+      .card-number { right: 16px; top: 22px; }
+      .universe-card h3 { font-size: 16px; }
+      .network-card { padding: 18px 15px; }
+      .network-card:not(:last-child)::after { right: -12px; }
+      .network-intro { align-items: start; font-size: 11px; }
+      .network-intro .icon { flex-shrink: 0; margin-top: 2px; }
+      .protocol { padding: 18px; gap: 12px; align-items: start; }
+      .quiz-layout { grid-template-columns: 1fr; gap: 22px; }
+      .quiz-intro { padding-top: 0; }
+      .quiz-intro h2 { font-size: 26px; }
+      .quiz-intro > p:not(.section-kicker) { max-width: none; }
+      .quiz-meta { margin-top: 15px; }
+      .quiz-tip { margin-top: 20px; }
+      .quiz-card { padding: 22px 18px; }
+      .quiz-actions .button { min-height: 43px; padding: 9px 15px; }
+      .footer-inner { flex-direction: column; align-items: start; gap: 7px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+  </style>
+</head>
+<body id="top">
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="数字探索小站，返回顶部">
+        <span class="brand-mark"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4Z"/></svg></span>
+        数字探索小站<span style="color:#9eb7e4">.</span>
+      </a>
+      <nav aria-label="页面导航">
+        <a href="#about">关于我</a><a href="#universe">数字小宇宙</a><a href="#network">网络探险</a><a class="nav-quiz" href="#quiz">知识小测验 ↗</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-inner">
+        <div>
+          <p class="eyebrow">A LITTLE SPACE FOR BIG CURIOSITY</p>
+          <div class="hello"><span aria-hidden="true"></span>你好，我是光影学徒</div>
+          <h1 id="hero-title">我的数字<br><em>探索小站</em><span style="color:#8eafea">.</span></h1>
+          <p class="hero-description">从一束光到一行代码，从镜头里的故事到数字世界的可能。<br>带着好奇心，一起把不懂的事变成新的灵感。</p>
+          <a class="button" href="#universe">开始探索 <span aria-hidden="true">↗</span></a>
+          <p class="hero-note">观察 · 理解 · 创作 &nbsp; / &nbsp; 每一次好奇，都是一个新起点</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-window">
+            <div class="window-top"><i></i><i></i><i></i><span>EXPLORATION / FRAME 001</span></div>
+            <svg class="art-scene" viewBox="0 0 440 300" fill="none">
+              <defs>
+                <linearGradient id="scene" x1="20" y1="0" x2="440" y2="300" gradientUnits="userSpaceOnUse"><stop stop-color="#e9f0ff"/><stop offset="1" stop-color="#cbdcff"/></linearGradient>
+                <radialGradient id="orb"><stop stop-color="#fff"/><stop offset=".55" stop-color="#dbe8ff"/><stop offset="1" stop-color="#8faeea"/></radialGradient>
+                <linearGradient id="ribbon" x1="64" y1="236" x2="342" y2="74" gradientUnits="userSpaceOnUse"><stop stop-color="#93b2ed"/><stop offset=".5" stop-color="#e4eeff"/><stop offset="1" stop-color="#6f96df"/></linearGradient>
+              </defs>
+              <rect width="440" height="300" fill="url(#scene)"/>
+              <path d="M0 60h440M0 120h440M0 180h440M0 240h440M70 0v300M145 0v300M220 0v300M295 0v300M370 0v300" stroke="#fff" stroke-opacity=".3"/>
+              <circle cx="230" cy="147" r="112" stroke="#fff" stroke-opacity=".65" stroke-dasharray="3 7"/>
+              <ellipse cx="230" cy="151" rx="135" ry="48" transform="rotate(-30 230 151)" stroke="#91ade1" stroke-width="2"/>
+              <circle cx="230" cy="145" r="69" fill="url(#orb)"/>
+              <ellipse cx="230" cy="151" rx="135" ry="48" transform="rotate(-30 230 151)" stroke="url(#ribbon)" stroke-width="16" stroke-dasharray="260 400"/>
+              <circle cx="108" cy="192" r="8" fill="#6e95dc"/><circle cx="343" cy="73" r="5" fill="#fff"/>
+              <path d="m86 65 3 8 8 3-8 3-3 8-3-8-8-3 8-3ZM352 208l2 6 6 2-6 2-2 6-2-6-6-2 6-2Z" fill="#fff"/>
+              <path d="M29 44V26h18M393 26h18v18M29 256v18h18M393 274h18v-18" stroke="#fff" stroke-width="2"/>
+              <text x="29" y="247" fill="#7898d0" font-size="8" font-family="monospace" letter-spacing="2">IMAGINE WHAT'S NEXT</text>
+            </svg>
+            <div class="art-caption"><span>LIGHT · CODE · POSSIBILITY</span><span>00:00:01</span></div>
+          </div>
+          <span class="floating-label first">✧ 捕捉一帧灵感</span>
+          <span class="floating-label last">AI × 影像 × 无限可能</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="content-section" aria-labelledby="about-title">
+      <div class="container">
+        <div class="section-heading"><p class="section-kicker">01 / ABOUT ME</p><h2 id="about-title">关于我</h2><p class="section-description">一个用镜头观察世界，也用技术拓宽想象的人。</p></div>
+        <div class="about-grid">
+          <div class="card about-card profile"><div class="avatar"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="12" cy="12" r="4"/><path d="M6 5 8 2h8l2 3M17 8h1"/></svg></div><div><p class="profile-label">我的昵称</p><h3>光影学徒</h3><small>Always learning, always creating.</small></div></div>
+          <div class="card about-card"><h3 class="small-heading"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 10h18M7 5l3 5M14 5l3 5M10 13l5 2-5 2Z"/></svg>兴趣所在</h3><div class="tags"><span class="tag">影视摄影</span><span class="tag">AIGC 短片</span><span class="tag">镜头叙事</span></div></div>
+          <div class="card about-card"><h3 class="small-heading"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4Z"/></svg>下一站，继续探索</h3><div class="tags"><span class="tag">AI 视频</span><span class="tag">实时渲染</span><span class="tag">交互影像</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="universe" class="content-section universe" aria-labelledby="universe-title">
+      <div class="container">
+        <div class="section-heading heading-row"><div><p class="section-kicker">02 / DIGITAL UNIVERSE</p><h2 id="universe-title">数字小宇宙</h2><p class="section-description">电脑里住着哪些搭档？用四张卡片，认识它们的分工。</p></div><p class="aside-note">4 PIECES · ONE DIGITAL WORLD</p></div>
+        <div class="universe-grid">
+          <article class="card universe-card"><span class="card-number">01</span><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 9h6v6H9zM9 2v4m6-4v4M9 18v4m6-4v4M2 9h4m-4 6h4m12-6h4m-4 6h4"/></svg></div><h3>CPU<span class="english">CENTRAL PROCESSING UNIT</span></h3><h4>电脑的「大脑」</h4><p>负责计算、执行指令和调度任务，就像导演协调每一个镜头，让电脑有条不紊地工作。</p></article>
+          <article class="card universe-card"><span class="card-number">02</span><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="11" rx="2"/><path d="M6 10h3v3H6zM15 10h3v3h-3zM5 17v3m4-3v3m6-3v3m4-3v3"/></svg></div><h3>内存<span class="english">RAM / MEMORY</span></h3><h4>临时的「工作台」</h4><p>放着正在使用的程序和数据，取用很快。但断电后，工作台上的数据就会丢失。</p></article>
+          <article class="card universe-card"><span class="card-number">03</span><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="3"/><circle cx="12" cy="10" r="4"/><path d="m12 10 4 4M8 18h5m3 0h.01"/></svg></div><h3>存储器<span class="english">SSD / HDD · STORAGE</span></h3><h4>长期的「收藏柜」</h4><p>长期保存照片、视频和文件。即使关机，资料也还在，像一个随时可以打开的素材库。</p></article>
+          <article class="card universe-card"><span class="card-number">04</span><div class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M3 8h18M9 21h6m-3-4v4M6 5.5h.01m3 0h.01"/></svg></div><h3>操作系统<span class="english">OPERATING SYSTEM</span></h3><h4>硬件的「管家」</h4><p>管理硬件资源，为软件提供运行环境。Windows、macOS、Linux 都是这位管家的不同面孔。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="network" class="content-section" aria-labelledby="network-title">
+      <div class="container">
+        <div class="section-heading"><p class="section-kicker">03 / INTERNET ADVENTURE</p><h2 id="network-title">网络探险</h2><p class="section-description">输入一个网址后，网页是怎么来到你面前的？</p></div>
+        <p class="network-intro"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z"/></svg>把访问网站想成一次旅行：打开窗口 → 输入地址 → 查找位置 → 取得内容。</p>
+        <ol class="network-grid">
+          <li class="card network-card"><h3>浏览器</h3><p>你看网页的工具，例如 Chrome、Edge。它发送请求，并把收到的代码呈现为文字、图片和页面。</p><p class="analogy">就像：通往网络的窗口</p></li>
+          <li class="card network-card"><h3>域名</h3><p>网站方便记忆的名字，例如 example.com。比起一长串数字地址，它更容易让人记住。</p><p class="analogy">就像：网站的名字与门牌</p></li>
+          <li class="card network-card"><h3>DNS</h3><p>帮你查询域名对应的 IP 地址，让浏览器知道该去哪里找网站。已查过的结果还可以被缓存。</p><p class="analogy">就像：把名字查成地址的通讯录</p></li>
+          <li class="card network-card"><h3>服务器</h3><p>一台提供网站服务的计算机。它接收浏览器的请求，把网页文件或所需数据发送回来。</p><p class="analogy">就像：接单并送出内容的服务站</p></li>
+        </ol>
+        <div class="protocol"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z"/><path d="m8 12 3 3 5-6"/></svg><div><h3>HTTP / HTTPS：浏览器与服务器的沟通规则</h3><p>HTTP 规定了请求和响应如何传递；HTTPS 在此基础上增加传输加密与身份验证，就像给内容装上带锁的信封。不过，连接加密并不代表网站内容一定可信。</p></div></div>
+      </div>
+    </section>
+
+    <section id="quiz" class="content-section quiz-section" aria-labelledby="quiz-title">
+      <div class="container quiz-layout">
+        <div class="quiz-intro"><p class="section-kicker">04 / A LITTLE CHALLENGE</p><h2 id="quiz-title">好奇心，来个小测验？</h2><p>刚刚的网络探险，你记住了多少？<br>用几个小问题，把新知识装进口袋。</p><div class="quiz-meta"><span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 12h6m-6 5h4"/></svg><span id="quiz-count">5 道选择题</span></span><span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>约 1 分钟</span></div><div class="quiz-tip">不必担心答错，探索就是从尝试开始的。<br>全部完成后，可以查看得分和每题解析。</div></div>
+        <div class="card quiz-card">
+          <div id="quiz-play">
+            <div class="quiz-top"><strong>网络知识小测验</strong><span id="question-counter" aria-live="polite" aria-atomic="true">第 1 / 5 题</span></div>
+            <progress id="quiz-progress" value="1" max="5" aria-label="当前题目进度"></progress>
+            <form id="quiz-form" novalidate>
+              <fieldset id="question-fieldset" aria-describedby="quiz-hint"><legend id="question-title" tabindex="-1"></legend><div id="answer-options"></div></fieldset>
+              <p id="quiz-hint" class="quiz-hint" role="status" aria-live="polite">选择一个答案，继续探索</p>
+              <div class="quiz-actions"><button id="previous-question" class="button secondary" type="button" hidden>上一题</button><button id="next-question" class="button" type="button">下一题 <span aria-hidden="true">→</span></button></div>
+            </form>
+          </div>
+          <div id="quiz-result" class="result" hidden aria-labelledby="result-title">
+            <p class="result-label">本次探索成绩</p><p id="score" class="score"></p><h3 id="result-title" tabindex="-1"></h3><p id="result-summary" class="result-summary"></p>
+            <button id="restart-quiz" class="button" type="button">再探索一次 <span aria-hidden="true">↻</span></button>
+            <details class="review"><summary>查看答案与解析</summary><ol id="answer-review"></ol></details>
+          </div>
+          <noscript><p>请启用浏览器的 JavaScript 来参与互动测验。上方的知识卡片仍可正常阅读。</p></noscript>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><p><span class="footer-brand">✧ 光影学徒的数字探索小站</span> &nbsp; · &nbsp; 保持好奇，慢慢发光。</p><a class="footer-link" href="#top">回到顶部 ↑</a></div></footer>
+
+  <script>
+    'use strict';
+
+    // ============================================================
+    // 【测验 JS 区域开始】代码微探索：无需安装工具，修改后刷新即可。
+    // A. 题库：可修改 question（题目）、options（选项）、explanation（解析）。
+    // correctIndex 是正确选项的下标，从 0 开始：0=A、1=B、2=C……
+    // 可复制一个完整对象来增加题目；题数、进度、得分会自动更新。
+    // ============================================================
+    const quizQuestions = [
+      {
+        question: '想打开一个网页，你通常会使用哪个工具？',
+        options: ['浏览器', '文件压缩软件', '视频剪辑软件'],
+        correctIndex: 0,
+        explanation: '浏览器会发送网页请求，并把 HTML、CSS 和 JavaScript 呈现为可以阅读、操作的页面。'
+      },
+      {
+        question: 'example.com 这样的域名，主要有什么作用？',
+        options: ['给电脑增加内存', '为网站提供容易记住的名字', '让所有网页自动加密'],
+        correctIndex: 1,
+        explanation: '域名是方便记忆的网站名字；它不是内存，也不能自动提供加密。'
+      },
+      {
+        question: 'DNS 更像下面哪一种生活用品？',
+        options: ['存放照片的相册', '用来剪辑的工作台', '把名字查成地址的通讯录'],
+        correctIndex: 2,
+        explanation: 'DNS 能查询域名对应的 IP 地址，帮助浏览器找到网站所在的位置。'
+      },
+      {
+        question: '浏览器发出请求后，通常是谁提供网页内容？',
+        options: ['鼠标', '服务器', '显示器'],
+        correctIndex: 1,
+        explanation: '服务器接收请求，然后发送网页文件或数据；浏览器收到后负责呈现。'
+      },
+      {
+        question: '相比 HTTP，HTTPS 主要增加了什么？',
+        options: ['传输加密与身份验证', '保证网站内容绝对可信', '让电脑永远不会断网'],
+        correctIndex: 0,
+        explanation: 'HTTPS 通过 TLS 保护传输并验证服务器身份，但不保证网站内容可靠，也不能保证网络一直畅通。'
+      }
+    ];
+
+    // B. 状态与页面元素：answers 按题号保存已选答案，返回上一题不会丢失。
+    let currentQuestion = 0;
+    let answers = Array(quizQuestions.length).fill(null);
+    const playPanel = document.querySelector('#quiz-play');
+    const resultPanel = document.querySelector('#quiz-result');
+    const questionTitle = document.querySelector('#question-title');
+    const optionsContainer = document.querySelector('#answer-options');
+    const nextButton = document.querySelector('#next-question');
+    const previousButton = document.querySelector('#previous-question');
+    const progress = document.querySelector('#quiz-progress');
+    const hint = document.querySelector('#quiz-hint');
+
+    // C. 渲染当前题目：使用原生单选框，支持 Tab、方向键和键盘提交。
+    function renderQuestion(moveFocus = false) {
+      const question = quizQuestions[currentQuestion];
+      questionTitle.textContent = question.question;
+      document.querySelector('#quiz-count').textContent = `${quizQuestions.length} 道选择题`;
+      document.querySelector('#question-counter').textContent = `第 ${currentQuestion + 1} / ${quizQuestions.length} 题`;
+      progress.max = quizQuestions.length;
+      progress.value = currentQuestion + 1;
+      optionsContainer.textContent = '';
+
+      question.options.forEach((option, index) => {
+        const label = document.createElement('label');
+        label.className = 'answer';
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'quiz-answer';
+        input.value = index;
+        input.checked = answers[currentQuestion] === index;
+        label.classList.toggle('is-selected', input.checked);
+        const letter = document.createElement('span');
+        letter.className = 'answer-letter';
+        letter.setAttribute('aria-hidden', 'true');
+        letter.textContent = String.fromCharCode(65 + index) + '.';
+        const text = document.createElement('span');
+        text.textContent = option;
+        input.addEventListener('change', saveSelectedAnswer);
+        label.append(input, letter, text);
+        optionsContainer.append(label);
+      });
+
+      previousButton.hidden = currentQuestion === 0;
+      hint.textContent = answers[currentQuestion] === null ? '选择一个答案，继续探索' : '已选择，可继续下一步';
+      hint.classList.remove('is-error');
+      nextButton.textContent = currentQuestion === quizQuestions.length - 1 ? '查看成绩 →' : '下一题 →';
+      if (moveFocus) questionTitle.focus();
+    }
+
+    // 同时用于选择事件和按钮点击：以页面上实际选中的单选框为准。
+    function saveSelectedAnswer() {
+      const selected = optionsContainer.querySelector('input:checked');
+      if (!selected) return false;
+      answers[currentQuestion] = Number(selected.value);
+      optionsContainer.querySelectorAll('.answer').forEach((label) => {
+        label.classList.toggle('is-selected', label.querySelector('input').checked);
+      });
+      hint.textContent = '已选择，可继续下一步';
+      hint.classList.remove('is-error');
+      return true;
+    }
+
+    // D. 判分与结果：每题同等分值，总分 100；修改此处可探索其他计分方式。
+    function showResult() {
+      const correctCount = answers.reduce((count, answer, index) => count + Number(answer === quizQuestions[index].correctIndex), 0);
+      const score = Math.round(correctCount / quizQuestions.length * 100);
+      const scoreElement = document.querySelector('#score');
+      scoreElement.textContent = String(score);
+      const unit = document.createElement('span');
+      unit.textContent = ' / 100 分';
+      scoreElement.append(unit);
+      document.querySelector('#result-title').textContent = score === 100 ? '太棒了，网络探索家！' : score >= 60 ? '不错，知识正在点亮！' : '每次尝试，都是新的收获';
+      document.querySelector('#result-summary').textContent = `你答对了 ${correctCount} / ${quizQuestions.length} 题。${score === 100 ? '继续带着好奇心，探索更远的数字世界。' : '看看解析，再出发一次吧！'}`;
+
+      const review = document.querySelector('#answer-review');
+      review.textContent = '';
+      quizQuestions.forEach((question, index) => {
+        const item = document.createElement('li');
+        const status = document.createElement('span');
+        const correct = answers[index] === question.correctIndex;
+        status.className = `answer-status ${correct ? 'correct' : 'incorrect'}`;
+        status.textContent = correct ? '✓ 答对' : '↗ 再记一下';
+        const title = document.createElement('strong');
+        title.textContent = question.question;
+        const selected = document.createElement('p');
+        selected.textContent = `你的选择：${question.options[answers[index]]}。正确答案：${question.options[question.correctIndex]}。`;
+        const explanation = document.createElement('p');
+        explanation.textContent = question.explanation;
+        item.append(status, title, selected, explanation);
+        review.append(item);
+      });
+      playPanel.hidden = true;
+      resultPanel.hidden = false;
+      document.querySelector('#result-title').focus();
+    }
+
+    // E. 按钮事件：直接处理点击，避免表单自动校验阻止切题。
+    // 未选择时显示文字提示；点击时重新读取选项，兼容恢复的勾选状态。
+    function advanceQuestion() {
+      if (!saveSelectedAnswer()) {
+        hint.textContent = '请先选择一个答案，再点击“下一题”或“查看成绩”。';
+        hint.classList.add('is-error');
+        optionsContainer.querySelector('input').focus();
+        return;
+      }
+      if (currentQuestion < quizQuestions.length - 1) {
+        currentQuestion += 1;
+        renderQuestion(true);
+      } else {
+        showResult();
+      }
+    }
+    nextButton.addEventListener('click', advanceQuestion);
+    document.querySelector('#quiz-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      advanceQuestion();
+    });
+    // 保留在单选框上按 Enter 继续的键盘操作，方向键仍用于切换选项。
+    optionsContainer.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        advanceQuestion();
+      }
+    });
+    previousButton.addEventListener('click', () => {
+      if (currentQuestion === 0) return;
+      currentQuestion -= 1;
+      renderQuestion(true);
+    });
+    document.querySelector('#restart-quiz').addEventListener('click', () => {
+      currentQuestion = 0;
+      answers = Array(quizQuestions.length).fill(null);
+      resultPanel.hidden = true;
+      resultPanel.querySelector('details').open = false;
+      playPanel.hidden = false;
+      renderQuestion(true);
+    });
+
+    renderQuestion();
+    // ====================【测验 JS 区域结束】====================
+  </script>
+</body>
+</html>
